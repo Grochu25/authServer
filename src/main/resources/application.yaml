@@ -1,0 +1,25 @@
+app:
+  datasource:
+    credentials:
+      url: jdbc:mysql://localhost:3306/library_users_credentials
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: root
+      password:
+    details:
+      url: jdbc:mysql://localhost:3306/library
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: root
+      password:
+
+
+server:
+  port: 9000
+#  ssl:
+#    key-store-type: PKCS12
+#    key-store: classpath:library_cert.p12
+#    key-store-password: secret
+#    key-alias: library_cert
+#    enabled: true
+gg:
+  jte:
+    developmentMode: true
