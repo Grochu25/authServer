@@ -1,5 +1,5 @@
 package com.grochu.authserver.Model;
 
-public record UserLoginDTO(String email, String password) {
+public record UserLoginDTO(String login, String password) {
 }
 

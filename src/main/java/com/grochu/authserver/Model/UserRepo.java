@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public interface UserRepo
 {
-    Optional<User> findByEmail(String email);
+    Optional<User> findByLogin(String email);
     User save(User user);
     User delete(User user);
     User update(User user);

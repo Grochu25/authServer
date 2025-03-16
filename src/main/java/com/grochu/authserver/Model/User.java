@@ -1,7 +1,6 @@
 package com.grochu.authserver.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,19 +15,19 @@ import java.util.List;
 @Setter
 public class User implements UserDetails
 {
-    private String email;
+    private String login;
     @JsonIgnore
     private String password;
     private String role;
 
     public User(){
-        email = "";
+        login = "";
         password = "";
         role = "";
     }
 
-    public User(String email, String password, String role){
-        this.email = email;
+    public User(String login, String password, String role){
+        this.login = login;
         this.password = password;
         this.role = role;
     }
@@ -49,7 +48,7 @@ public class User implements UserDetails
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override

@@ -20,19 +20,19 @@ public class UserRepoImp implements UserRepo
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        List<User> result = jdbcTemplate.query("SELECT * FROM credentials WHERE email=?",this::rowToUser,email);
+    public Optional<User> findByLogin(String login) {
+        List<User> result = jdbcTemplate.query("SELECT * FROM credentials WHERE login=?",this::rowToUser,login);
         return (result.size()>0)?Optional.of(result.get(0)) : Optional.empty();
     }
 
     private User rowToUser(ResultSet row, int rowNum) throws SQLException {
-        return new User(row.getString("email"), row.getString("passwd"), row.getString("role"));
+        return new User(row.getString("login"), row.getString("passwd"), row.getString("role"));
     }
 
     @Override
     public User save(User user) {
-        jdbcTemplate.update("INSERT INTO credentials(email, passwd, role) VALUES (?,?,?)",
-                user.getEmail(),
+        jdbcTemplate.update("INSERT INTO credentials(login, passwd, role) VALUES (?,?,?)",
+                user.getLogin(),
                 user.getPassword(),
                 user.getRole());
         return user;
@@ -40,13 +40,13 @@ public class UserRepoImp implements UserRepo
 
     @Override
     public User delete(User user) {
-        jdbcTemplate.update("DELETE FROM credentials WHERE email=?",user.getEmail());
+        jdbcTemplate.update("DELETE FROM credentials WHERE login=?",user.getLogin());
         return user;
     }
 
     @Override
     public User update(User user) {
-        jdbcTemplate.update("UPDATE credentials SET passwd=? WHERE email=?",user.getPassword(),user.getEmail());
+        jdbcTemplate.update("UPDATE credentials SET passwd=? WHERE login=?",user.getPassword(),user.getLogin());
         return user;
     }
 }

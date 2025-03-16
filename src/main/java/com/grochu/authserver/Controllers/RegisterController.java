@@ -1,9 +1,6 @@
 package com.grochu.authserver.Controllers;
 
-import com.grochu.authserver.Model.RegisterUserDetails;
-import com.grochu.authserver.Model.RegisterUserDetailsRepo;
-import com.grochu.authserver.Model.User;
-import com.grochu.authserver.Model.UserRepo;
+import com.grochu.authserver.Model.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +31,14 @@ public class RegisterController
         model.addAttribute("userDetails", new RegisterUserDetails());
         log.info("Entered register form");
         return "registerForm";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model)
+    {
+        model.addAttribute("userDetails", new UserLoginDTO("",""));
+        log.info("Entered login form");
+        return "login";
     }
 
     @PostMapping("/register")
