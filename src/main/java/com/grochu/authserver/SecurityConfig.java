@@ -6,6 +6,8 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -46,9 +48,12 @@ import java.util.stream.Collectors;
 
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
+@ConfigurationProperties("app.clients")
 //@Import(OAuth2AuthorizationServerConfiguration.class)
 public class SecurityConfig
 {
+    private String adminHostname = "127.0.0.1";
+    private String adminPort = "8000";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -107,7 +112,7 @@ public class SecurityConfig
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8000/login/oauth2/code/library-admin-client")
+                .redirectUri("http://"+adminHostname+":"+adminPort+"/login/oauth2/code/library-admin-client")
                 .postLogoutRedirectUri("http://127.0.0.1:8000")
                 .scope("adminStuff")
                 .scope(OidcScopes.OPENID)

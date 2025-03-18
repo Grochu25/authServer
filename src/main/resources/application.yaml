@@ -2,18 +2,21 @@ app:
   datasource:
     credentials:
       url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/library_users_credentials
-      driverClassName: classpath:/mysql-connector-j-8.1.0.jar
+      driverClassName: com.mysql.cj.jdbc.Driver
       username: admin
       password: secret
     details:
       url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/library_data
-      driverClassName: classpath:/mysql-connector-j-8.1.0.jar
+      driverClassName: com.mysql.cj.jdbc.Driver
       username: admin
       password: secret
+  clients:
+    adminHostname: ${ADMIN_HOSTNAME}
+    adminPort: ${ADMIN_PORT}
 
 
 server:
-  port: 9000
+  port: ${AUTH_PORT}
 gg:
   jte:
     developmentMode: true
