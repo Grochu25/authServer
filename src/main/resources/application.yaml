@@ -1,13 +1,13 @@
 app:
   datasource:
     credentials:
-      url: jdbc:mysql://localhost:3306/library_users_credentials
-      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/library_users_credentials
+      driverClassName: classpath:/mysql-connector-j-8.1.0.jar
       username: admin
       password: secret
     details:
-      url: jdbc:mysql://localhost:3306/library_data
-      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_HOSTNAME}:${MYSQL_PORT}/library_data
+      driverClassName: classpath:/mysql-connector-j-8.1.0.jar
       username: admin
       password: secret
 
