@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -46,14 +47,17 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
-@ConfigurationProperties("app.clients")
-//@Import(OAuth2AuthorizationServerConfiguration.class)
 public class SecurityConfig
 {
-    private String adminHostname = "127.0.0.1";
-    private String adminPort = "8000";
+    private EnvironmentalConfig envConf;
+
+    public SecurityConfig(EnvironmentalConfig environmentalConfig)
+    {
+        this.envConf = environmentalConfig;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -99,12 +103,14 @@ public class SecurityConfig
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:5173/code")
-                .postLogoutRedirectUri("http://localhost:5173/")
+                .redirectUri("http://"+envConf.getClientHostname()+":"+envConf.getClientPort()+"/code")
+                .postLogoutRedirectUri("http://"+envConf.getClientHostname()+":"+envConf.getClientPort()+"/")
                 .scope("customerStuff")
                 .scope(OidcScopes.OPENID)
                 //.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
+
+        log.info(envConf.getAdminHostname()+":"+envConf.getAdminPort());
 
         RegisteredClient registeredAdminClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("library-admin-client")
@@ -112,8 +118,8 @@ public class SecurityConfig
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://"+adminHostname+":"+adminPort+"/login/oauth2/code/library-admin-client")
-                .postLogoutRedirectUri("http://127.0.0.1:8000")
+                .redirectUri("http://"+envConf.getAdminHostname()+":"+envConf.getAdminPort()+"/login/oauth2/code/library-admin-client")
+                .postLogoutRedirectUri("http://"+envConf.getAdminHostname()+":"+envConf.getAdminPort())
                 .scope("adminStuff")
                 .scope(OidcScopes.OPENID)
                 .build();
@@ -167,7 +173,10 @@ public class SecurityConfig
         CorsConfiguration conf = new CorsConfiguration();
         conf.setAllowedHeaders(List.of("Content-Type", "Authorization"));
         conf.setAllowedMethods(List.of("GET", "POST"));
-        conf.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:8080","http://127.0.0.1:8000"));
+        conf.setAllowedOrigins(List.of(
+                "http://"+envConf.getClientHostname()+":"+envConf.getClientPort(),
+                "http://"+envConf.getResourceHostname()+":"+envConf.getResourcePort(),
+                "http://"+envConf.getAdminHostname()+":"+envConf.getAdminPort()));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", conf);
         return source;

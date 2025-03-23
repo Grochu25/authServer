@@ -10,9 +10,6 @@ app:
       driverClassName: com.mysql.cj.jdbc.Driver
       username: admin
       password: secret
-  clients:
-    adminHostname: ${ADMIN_HOSTNAME}
-    adminPort: ${ADMIN_PORT}
 
 
 server:
