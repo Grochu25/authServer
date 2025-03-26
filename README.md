@@ -8,6 +8,8 @@ Other parts of application:
 - [Admin client app](https://github.com/Grochu25/library-admin-client)
 - client app (in progress)
 
+Server allows only for login from admin app and client app.
+
 ## Database
 To run this application, an external **MySQL server** is required with the following databases:
 - *library_users_credentials* - Structure and example data are stored in library_users_credentials.sql
