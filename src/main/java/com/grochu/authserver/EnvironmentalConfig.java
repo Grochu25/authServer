@@ -20,6 +20,8 @@ public class EnvironmentalConfig
     private String resourceHostname = "localhost";
     @Value("${RESOURCE_PORT}")
     private String resourcePort = "8080";
+    @Value("${CLIENT_HOSTNAME}")
     private String clientHostname = "localhost";
+    @Value("${CLIENT_PORT}")
     private String clientPort = "5173";
 }

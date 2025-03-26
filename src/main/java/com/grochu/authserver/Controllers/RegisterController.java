@@ -50,7 +50,13 @@ public class RegisterController
             model.addAttribute("userDetails", userDetails);
             return "registerForm";
         }
-        log.info("Saving user: {}", userDetails.getEmail());
+        if(userRepo.findByLogin(userDetails.getEmail()) != null){
+            Map<String, String> errorsMap = new HashMap<>();
+            errorsMap.put("email", "Istnieje już konto z tym adresem email");
+            model.addAttribute("errorMessages", errorsMap);
+            model.addAttribute("userDetails", userDetails);
+            return "registerForm";
+        }
         registerUserDetailsRepo.save(userDetails);
         userRepo.save(new User(userDetails.getEmail(),passwordEncoder.encode(userDetails.getPassword()),"USER"));
 
