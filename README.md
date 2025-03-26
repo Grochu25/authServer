@@ -33,3 +33,7 @@ To allow changing the addresses and ports of all servers that make up the librar
 - AUTH_PORT=9000
 - RESOURCE_PORT=8080
 - CLIENT_PORT=5173
+
+## Docker
+To dockerize this application segment there is ready to use **Dockerfile** inside project root folder.
+To use whole application with all segments there is a **docker-compose.yml**, that pulls all necessary images and sets up the network between them
